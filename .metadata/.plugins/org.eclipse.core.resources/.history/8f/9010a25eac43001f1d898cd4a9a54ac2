@@ -1,0 +1,89 @@
+package projeto_APOO_academia;
+
+import java.util.List;
+import java.util.Scanner;
+
+public class AlunoApp {
+    private static AlunoService alunoService = new AlunoService();
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            System.out.println("1. Cadastrar Aluno");
+            System.out.println("2. Buscar Aluno");
+            System.out.println("3. Atualizar Aluno");
+            System.out.println("4. Deletar Aluno");
+            System.out.println("5. Listar Alunos");
+            System.out.println("6. Sair");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); 
+
+            switch (choice) {
+                case 1:
+                    System.out.println("CPF: ");
+                    String cpf = scanner.nextLine();
+                    System.out.println("Nome: ");
+                    String nome = scanner.nextLine();
+                    System.out.println("Idade: ");
+                    int idade = scanner.nextInt();
+                    scanner.nextLine(); 
+                    System.out.println("Endereço: ");
+                    String endereco = scanner.nextLine();
+                    Aluno aluno = new Aluno.Builder()
+                            .cpf(cpf)
+                            .nome(nome)
+                            .idade(idade)
+                            .endereco(endereco)
+                            .build();
+                    try {
+                        alunoService.cadastrarAluno(aluno);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 2:
+                    System.out.println("CPF: ");
+                    cpf = scanner.nextLine();
+                    Aluno alunoBuscado = alunoService.buscarAluno(cpf);
+                    System.out.println(alunoBuscado);
+                    break;
+                case 3:
+                    System.out.println("CPF: ");
+                    cpf = scanner.nextLine();
+                    System.out.println("Nome: ");
+                    nome = scanner.nextLine();
+                    System.out.println("Idade: ");
+                    idade = scanner.nextInt();
+                    scanner.nextLine(); 
+                    System.out.println("Endereço: ");
+                    endereco = scanner.nextLine();
+                    Aluno alunoAtualizado = new Aluno.Builder()
+                            .cpf(cpf)
+                            .nome(nome)
+                            .idade(idade)
+                            .endereco(endereco)
+                            .build();
+                    try {
+                        alunoService.atualizarAluno(alunoAtualizado);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 4:
+                    System.out.println("CPF: ");
+                    cpf = scanner.nextLine();
+                    alunoService.deletarAluno(cpf);
+                    break;
+                case 5:
+                    List<Aluno> alunos = alunoService.listarAlunos();
+                    alunos.forEach(System.out::println);
+                    break;
+                case 6:
+                    return;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+}
+

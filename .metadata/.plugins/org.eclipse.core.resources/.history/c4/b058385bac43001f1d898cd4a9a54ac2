@@ -1,0 +1,36 @@
+package projeto_APOO_academia;
+
+import java.util.List;
+
+public class AlunoService {
+    private DAO<Aluno> alunoDAO = GenericDAO.getInstance();
+    private CPFValidator cpfValidator = CPFValidator.getInstance();
+
+    public void cadastrarAluno(Aluno aluno) {
+        if (cpfValidator.isValid(aluno.getId())) {
+            alunoDAO.save(aluno);
+        } else {
+            throw new IllegalArgumentException("CPF inválido");
+        }
+    }
+
+    public Aluno buscarAluno(String cpf) {
+        return alunoDAO.get(cpf);
+    }
+
+    public void atualizarAluno(Aluno aluno) {
+        if (cpfValidator.isValid(aluno.getId())) {
+            alunoDAO.update(aluno);
+        } else {
+            throw new IllegalArgumentException("CPF inválido");
+        }
+    }
+
+    public void deletarAluno(String cpf) {
+        alunoDAO.delete(cpf);
+    }
+
+    public List<Aluno> listarAlunos() {
+        return alunoDAO.getAll();
+    }
+}
